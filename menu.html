@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen Menu</title>
+
+    <!-- Font Awesome and Google Fonts Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" />
+
+    <!-- Link to External CSS -->
+    <link rel="stylesheet" href="stylez/menu.css" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="back-button"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+            <h1>Canteen Menu</h1>
+        </nav>
+    </header>
+
+    <!-- Hero Section for Menu Page -->
+    <section class="menu-hero-section">
+        <h1 class="menu-heading" style="color: rgb(239, 79, 95);">Explore our delicious menu</h1>
+
+    </section>
+
+    <!-- Toggle Switch -->
+    <div class="veg-toggle-container">
+        <label class="switch">
+            <input type="checkbox" id="veg-toggle">
+            <span class="slider round"></span>
+        </label>
+        <span class="toggle-label">Show Veg Only</span>
+    </div>
+
+<!-- Menu Items Section -->
+<section class="menu-container">
+    <div class="menu-item">
+        <img src="assets/burger.jpg" alt="Menu Item 1">
+        <div class="menu-details">
+            <h3>Spicy Burger</h3>
+            <p>Juicy, spicy, and packed with flavor.</p>
+            <span>₹80</span>
+        </div>
+        <button class="add-to-cart" data-name="Spicy Burger" data-price="80">
+            <i class="fa fa-cart-plus"></i>
+        </button>
+    </div>
+    <div class="menu-item">
+        <img src="assets/grill.jpg" alt="Menu Item 2">
+        <div class="menu-details">
+            <h3>Grilled Sandwich</h3>
+            <p>Cheesy delight with fresh veggies.</p>
+            <span>₹120</span>
+        </div>
+        <button class="add-to-cart" data-name="Grilled Sandwich" data-price="120">
+            <i class="fa fa-cart-plus"></i>
+        </button>
+    </div>
+    <div class="menu-item">
+        <img src="assets/wrap.jpg" alt="Menu Item 3">
+        <div class="menu-details">
+            <h3>Chicken Wrap</h3>
+            <p>Delicious wrap with tender chicken.</p>
+            <span>₹150</span>
+        </div>
+        <button class="add-to-cart" data-name="Chicken Wrap" data-price="150">
+            <i class="fa fa-cart-plus"></i>
+        </button>
+    </div>
+</section>
+
+
+     
+
+    <footer>
+        <p>&copy; 2024 Canteen Menu. All rights reserved.</p>
+    </footer>
+    <script src="scriptt/menu.js"></script>
+    <script src="scriptt/aa.js"></script>
+
+</body>
+
+</html>

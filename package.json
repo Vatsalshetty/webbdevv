@@ -1,0 +1,248 @@
+// package.json
+{
+  "name": "food-booking-system",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "cors": "^2.8.5",
+    "joi": "^17.9.1"
+  }
+}
+
+// .env
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/food-booking-system
+
+// server.js
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+require('dotenv').config();
+
+const restaurantRoutes = require('./routes/restaurantRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+app.use('/api/restaurants', restaurantRoutes);
+app.use('/api/orders', orderRoutes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+// models/restaurantModel.js
+const mongoose = require('mongoose');
+
+const menuItemSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  category: { type: String, required: true },
+  isAvailable: { type: Boolean, default: true }
+});
+
+const restaurantSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  cuisine: { type: String, required: true },
+  address: { type: String, required: true },
+  rating: { type: Number, default: 0 },
+  menuItems: [menuItemSchema],
+  isOpen: { type: Boolean, default: true }
+});
+
+module.exports = mongoose.model('Restaurant', restaurantSchema);
+
+// models/orderModel.js
+const mongoose = require('mongoose');
+
+const orderItemSchema = new mongoose.Schema({
+  menuItem: { type: mongoose.Schema.Types.ObjectId, ref: 'MenuItem', required: true },
+  quantity: { type: Number, required: true },
+  notes: String
+});
+
+const orderSchema = new mongoose.Schema({
+  restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
+  userId: { type: String, required: true },
+  items: [orderItemSchema],
+  totalAmount: { type: Number, required: true },
+  status: {
+    type: String,
+    enum: ['pending', 'confirmed', 'preparing', 'ready', 'delivered', 'cancelled'],
+    default: 'pending'
+  }
+}, { timestamps: true });
+
+module.exports = mongoose.model('Order', orderSchema);
+
+// controllers/restaurantController.js
+const Restaurant = require('../models/restaurantModel');
+
+exports.getAllRestaurants = async (req, res) => {
+  try {
+    const restaurants = await Restaurant.find();
+    res.json(restaurants);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getRestaurantById = async (req, res) => {
+  try {
+    const restaurant = await Restaurant.findById(req.params.id);
+    if (!restaurant) {
+      return res.status(404).json({ message: 'Restaurant not found' });
+    }
+    res.json(restaurant);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.createRestaurant = async (req, res) => {
+  try {
+    const restaurant = new Restaurant(req.body);
+    const savedRestaurant = await restaurant.save();
+    res.status(201).json(savedRestaurant);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.updateRestaurant = async (req, res) => {
+  try {
+    const restaurant = await Restaurant.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!restaurant) {
+      return res.status(404).json({ message: 'Restaurant not found' });
+    }
+    res.json(restaurant);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// controllers/orderController.js
+const Order = require('../models/orderModel');
+const Restaurant = require('../models/restaurantModel');
+
+exports.createOrder = async (req, res) => {
+  try {
+    const { restaurantId, items, userId } = req.body;
+
+    const restaurant = await Restaurant.findById(restaurantId);
+    if (!restaurant) {
+      return res.status(404).json({ message: 'Restaurant not found' });
+    }
+
+    if (!restaurant.isOpen) {
+      return res.status(400).json({ message: 'Restaurant is closed' });
+    }
+
+    let totalAmount = 0;
+    for (const item of items) {
+      const menuItem = restaurant.menuItems.id(item.menuItem);
+      if (!menuItem) {
+        return res.status(404).json({ message: `Menu item not found` });
+      }
+      if (!menuItem.isAvailable) {
+        return res.status(400).json({ message: `${menuItem.name} is not available` });
+      }
+      totalAmount += menuItem.price * item.quantity;
+    }
+
+    const order = new Order({
+      restaurant: restaurantId,
+      userId,
+      items,
+      totalAmount
+    });
+
+    const savedOrder = await order.save();
+    res.status(201).json(savedOrder);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.getOrderById = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id)
+      .populate('restaurant')
+      .populate('items.menuItem');
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    res.json(order);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.updateOrderStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    res.json(order);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.getUserOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ userId: req.params.userId })
+      .populate('restaurant')
+      .populate('items.menuItem')
+      .sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// routes/restaurantRoutes.js
+const express = require('express');
+const router = express.Router();
+const restaurantController = require('../controllers/restaurantController');
+
+router.get('/', restaurantController.getAllRestaurants);
+router.get('/:id', restaurantController.getRestaurantById);
+router.post('/', restaurantController.createRestaurant);
+router.put('/:id', restaurantController.updateRestaurant);
+
+module.exports = router;
+
+// routes/orderRoutes.js
+const express = require('express');
+const router = express.Router();
+const orderController = require('../controllers/orderController');
+
+router.post('/', orderController.createOrder);
+router.get('/:id', orderController.getOrderById);
+router.put('/:id/status', orderController.updateOrderStatus);
+router.get('/user/:userId', orderController.getUserOrders);
+
+module.exports = router;

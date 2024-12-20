@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" />
+    <!-- Link to your CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>BMS Canteens</title>
+</head>
+
+<body>
+    <section class="hero__section">
+        <header>
+            <nav class="navbar">
+                <div class="navbar__menu_container">
+                    <div class="dropdown">
+                        <button class="dropdown-button">Canteens</button>
+                        <div class="dropdown-content">
+                            <a href="menu.html">Old VK</a>
+                            <a href="menu.html">Library Canteen</a>
+                            <a href="menu.html">Vidyarthi Khaana</a>
+                            <a href="menu.html">Hostel Mess</a>
+                            <a href="menu.html">Central Canteen</a>
+                            <a href="menu.html">Food Court</a>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('login') }}" class="link">Login</a>
+                    <a href="{{ url_for('signup') }}" class="link">Sign Up</a>
+                </div>
+                <div class="user_icon">
+                    <a href="#"><i class="fa-solid fa-user"></i></a>
+                </div>
+            </nav>
+        </header>
+        <div class="hero__section_container">
+            <h1 class="hero__section_heading">Order food at your ease</h1>
+            <div class="hero__section_container_input">
+                <i class="fa-solid fa-magnifying-glass" id="search_icon"></i>
+                <input class="hero__section_input_search" type="text" placeholder="Search for a cuisine or dish" />
+            </div>
+        </div>
+    </section>
+
+    <section class="container_collections">
+        <h1>Canteens</h1>
+        <div class="sub_heading__container">
+            <span>Get the food from these canteens instantly</span>
+        </div>
+        <div class="collections__cards_container">
+
+            <a  href="{{ url_for('menuu') }}" class="cards card4">                <div class="overlay"></div>
+                <div class="collections__content">
+                    <h4>Old VK</h4>
+                    <span>Waiting Time: 0 mins</span>
+                </div>
+            </a>
+        
+            <a  href="{{ url_for('menuu') }}" class="cards card4">                <div class="overlay"></div>
+                <div class="collections__content">
+                    <h4>Library Canteen</h4>
+                    <span>Waiting Time: 3 mins</span>
+                </div>
+            </a>
+        
+            <a  href="{{ url_for('menuu') }}" class="cards card4">                <div class="overlay"></div>
+                <div class="collections__content">
+                    <h4>Vidyarthi Khaana</h4>
+                    <span>Waiting Time: 3 mins</span>
+                </div>
+            </a>
+        
+            <a  href="{{ url_for('menuu') }}" class="cards card4">
+                <div class="overlay"></div>
+                <div class="collections__content">
+                    <h4>Hostel Mess</h4>
+                    <span>Waiting Time: 5 mins</span>
+                </div>
+            </a>
+        
+        </div>
+        
+
+        </div>
+    </section>
+
+    <footer class="footer__container">
+        <div class="navigation_container">
+            <div class="link_container">
+                <h5>About Us</h5>
+                <div class="link_container_anchors">
+                    <a href="#">Blog</a>
+                    <a href="#">Report Fraud</a>
+                    <a href="#">Contact Us</a>
+                </div>
+            </div>
+
+            <div class="link_container">
+                <h5>In-Campus </h5>
+                <div class="link_container_anchors">
+                    <a href="#">Canteens</a>
+                    <a href="#">Vending Machines</a>
+                </div>
+            </div>
+
+            <div class="link_container">
+                <h5>For Canteens</h5>
+                <div class="link_container_anchors">
+                    <a href="#">Partner With Us</a>
+                    <a href="#">Apps For You</a>
+                </div>
+            </div>
+
+            <div class="link_container">
+                <h5>Learn More</h5>
+                <div class="link_container_anchors">
+                    <a href="#">Privacy</a>
+                    <a href="#">Security</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Sitemap</a>
+                </div>
+            </div>
+
+            <div class="link_container">
+                <h5>Social Links</h5>
+                <div class="social_media_icon_buttons">
+                    <button><i class="fa-brands fa-linkedin-in"></i></button>
+                    <button><i class="fa-brands fa-instagram"></i></button>
+                    <button><i class="fa-brands fa-twitter"></i></button>
+                    <button><i class="fa-brands fa-facebook"></i></button>
+                    <button><i class="fa-brands fa-youtube"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="disclaimer">
+            By continuing past this page, you agree to our Terms of Service, Cookie Policy, Privacy Policy and Content
+            Policies.
+        </div>
+    </footer>
+
+    <script>
+        // Fetch data dynamically for canteen cards
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/menu')
+                .then(response => response.json())
+                .then(data => {
+                    const cardsContainer = document.getElementById('canteen-cards');
+                    data.forEach(canteen => {
+                        const card = `
+                            <a href="menu.html" class="cards">
+                                <div class="overlay"></div>
+                                <div class="collections__content">
+                                    <h4>${canteen.name}</h4>
+                                    <span>Price: ₹${canteen.price}</span>
+                                    <span>${canteen.is_available ? 'Available' : 'Not Available'}</span>
+                                </div>
+                            </a>
+                        `;
+                        cardsContainer.innerHTML += card;
+                    });
+                })
+                .catch(err => console.error('Error fetching canteens:', err));
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen Menu</title>
+
+    <!-- Font Awesome and Google Fonts Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" />
+
+    <!-- Link to External CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='menu.css') }}">
+
+    <button class="add-to-cart">
+        <a href="{{ url_for('cart') }}" style="color: inherit; text-decoration: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-fill"
+                viewBox="0 0 16 16">
+                <path
+                    d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+            </svg>
+        </a>
+    </button>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="{{ url_for('index') }}" class="back-button"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+            <h1>Canteen Menu</h1>
+        </nav>
+    </header>
+
+    <!-- Hero Section for Menu Page -->
+    <section class="menu-hero-section">
+        <h1 class="menu-heading" style="color: rgb(239, 79, 95);">Explore our delicious menu</h1>
+
+    </section>
+
+    <!-- Toggle Switch -->
+    <div class="veg-toggle-container">
+        <label class="switch">
+            <input type="checkbox" id="veg-toggle">
+            <span class="slider round"></span>
+        </label>
+        <span class="toggle-label">Show Veg Only</span>
+    </div>
+
+    <!-- Menu Items Section -->
+    <section class="menu-container">
+        <div class="menu-item">
+            <img src="burger.jpg" alt="Menu Item 1">
+            <div class="menu-details">
+                <h3>Spicy Burger</h3>
+                <p>Juicy, spicy, and packed with flavor.</p>
+                <span>₹80</span>
+            </div>
+            <button class="add-to-cart" data-name="Spicy Burger" data-price="80">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <div class="menu-item">
+            <img src="grill.jpg" alt="Menu Item 2">
+            <div class="menu-details">
+                <h3>Grilled Sandwich</h3>
+                <p>Cheesy delight with fresh veggies.</p>
+                <span>₹120</span>
+            </div>
+            <button class="add-to-cart" data-name="Grilled Sandwich" data-price="120">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <div class="menu-item">
+            <img src="wrap.jpg" alt="Menu Item 3">
+            <div class="menu-details">
+                <h3>Chicken Wrap</h3>
+                <p>Delicious wrap with tender chicken.</p>
+                <span>₹150</span>
+        </div>
+        <div class="menu-item">
+            <img src="wrap.jpg" alt="Menu Item 3">
+                <div class="menu-details">
+                    <h3>Chicken Wrap</h3>
+                    <p>Delicious wrap with tender chicken.</p>
+                    <span>₹150</span>
+                </div>
+                <div class="menu-item">
+                    <img src="wrap.jpg" alt="Menu Item 3">
+                    <div class="menu-details">
+                        <h3>Chicken Wrap</h3>
+                        <p>Delicious wrap with tender chicken.</p>
+                        <span>₹150</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="wrap.jpg" alt="Menu Item 3">
+                        <div class="menu-details">
+                            <h3>Chicken Wrap</h3>
+                            <p>Delicious wrap with tender chicken.</p>
+                            <span>₹150</span>
+                        </div>
+                        <button class="add-to-cart" data-name="Chicken Wrap" data-price="150">
+                            <i class="fa fa-cart-plus"></i>
+                        </button>
+                    </div>
+    </section>
+
+
+
+
+    <footer>
+        <p>&copy; 2024 Canteen Menu. All rights reserved.</p>
+    </footer>
+    <script src="scriptt/menu.js"></script>
+    <script src="scriptt/aa.js"></script>
+
+</body>
+
+</html>

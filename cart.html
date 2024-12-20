@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+
+    <!-- Font Awesome and Google Fonts Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" />
+
+    <!-- Link to External CSS -->
+    <link rel="stylesheet" href="stylez/cart.css" />
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <a href="menu.html" class="back-button"><i class="fa-solid fa-arrow-left"></i> Back to Menu</a>
+            <h1>Your Cart</h1>
+        </nav>
+    </header>
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+        <h2 class="cart-heading" style="text-align: center; margin-bottom: 20px; color: rgb(239, 79, 95);">
+            Review Your Order
+        </h2>
+        
+        <!-- Cart Table -->
+        <div class="cart-container">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-items">
+                    <!-- Items will be dynamically added here by JavaScript -->
+                    <tr>
+                        <td>Spicy Burger</td>
+                        <td>1</td>
+                        <td>₹80</td>
+                        <td><button class="remove-item"><i class="fa-solid fa-trash"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>Grilled Sandwich</td>
+                        <td>2</td>
+                        <td>₹240</td>
+                        <td><button class="remove-item"><i class="fa-solid fa-trash"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Total Price -->
+        <div class="cart-total">
+            <h3>Total: ₹320</h3>
+        </div>
+
+        <!-- Checkout Button -->
+        <div class="checkout-container">
+            <button class="checkout-button">Proceed to Checkout</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Canteen Menu. All rights reserved.</p>
+    </footer>
+
+    <!-- External JS -->
+    <script src="script/cart.js"></script>
+</body>
+
+</html>

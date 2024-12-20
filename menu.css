@@ -184,11 +184,24 @@ input:checked + .slider:before {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Add-to-cart button */
+.menu-item {
+    position: relative; /* Make it easier to position child elements */
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    width: calc(100% / 3 - 40px);
+    max-width: 280px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
 .add-to-cart {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 10px; /* Position near the bottom */
+    right: 10px;  /* Position near the right */
     background-color: rgb(239, 79, 95);
+    color: white;
     border: none;
     border-radius: 50%;
     width: 40px;
@@ -197,29 +210,18 @@ input:checked + .slider:before {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.2);
-    transition: background-color 0.3s ease;
-    background: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.add-to-cart i {
+    font-size: 15px;
 }
 
 .add-to-cart:hover {
     background-color: rgb(200, 50, 70);
     transform: scale(1.1);
 }
-
-.add-to-cart img {
-    width: 24px; 
-    height: 24px;
-    object-fit: contain;
-}
-
-.add-to-cart img {
-    width: 24px; /* Adjust size as needed */
-    height: 24px;
-    object-fit: contain; /* Ensure proper scaling */
-}
-
-
 
 
 

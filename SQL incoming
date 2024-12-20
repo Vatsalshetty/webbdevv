@@ -1,0 +1,35 @@
+-- Table for `User`
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL
+);
+
+-- Table for `MenuItem`
+CREATE TABLE menu_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price FLOAT NOT NULL,
+    is_available BOOLEAN DEFAULT TRUE
+);
+
+-- Table for `Order`
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    total_amount FLOAT,
+    status VARCHAR(50) DEFAULT 'Pending',
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Table for `OrderItem`
+CREATE TABLE order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    menu_item_id INT,
+    quantity INT NOT NULL,
+    order_id INT,
+    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id),
+    FOREIGN KEY (order_id) REFERENCES orders(id)
+);

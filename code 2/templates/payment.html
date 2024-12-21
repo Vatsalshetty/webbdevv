@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='payment.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <div class="payment-container">
+        <h2>Payment Details</h2>
+        <div class="payment-form">
+            <div class="payment-methods">
+                <button class="payment-method active" id="card-method">
+                    <i class="fas fa-credit-card"></i> Credit/Debit Card
+                </button>
+                <button class="payment-method" id="upi-method">
+                    <i class="fas fa-wallet"></i> UPI
+                </button>
+            </div>
+            <form id="card-form">
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" placeholder="1234 5678 9012 3456" maxlength="19">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Expiry Date</label>
+                        <input type="text" placeholder="MM/YY" maxlength="5">
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="password" placeholder="***" maxlength="3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Card Holder Name</label>
+                    <input type="text" placeholder="Name on card">
+                </div>
+                <div class="total-amount">
+                    <span>Total Amount:</span>
+                    <span class="amount">₹320.00</span>
+                </div>
+                <button type="button" class="pay-button" onclick="redirectToSuccess()">Pay Now</button>
+            </form>
+            <form id="upi-form" style="display: none;">
+                <div class="form-group">
+                    <label>UPI ID</label>
+                    <input type="text" placeholder="example@upi">
+                </div>
+                <div class="form-group">
+                    <label>Scan QR Code</label>
+                    <img src="{{ url_for('static', filename='qr_code.png') }}" alt="UPI QR Code" style="width: 100%; max-width: 200px; display: block; margin: 0 auto;">
+                </div>
+                <div class="total-amount">
+                    <span>Total Amount:</span>
+                    <span class="amount">₹320.00</span>
+                </div>
+                <button type="button" class="pay-button" onclick="redirectToSuccess()">Pay Now</button>
+            </form>
+        </div>
+        <div class="cart-review" style="margin-top: 20px;">
+            <h3>Review Your Order</h3>
+            <ul id="payment-items"></ul>
+            <div class="total-amount" style="margin-top: 15px;">
+                <span>Total Amount:</span>
+                <span class="amount" id="payment-total">₹0.00</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cardMethod = document.getElementById('card-method');
+            const upiMethod = document.getElementById('upi-method');
+            const cardForm = document.getElementById('card-form');
+            const upiForm = document.getElementById('upi-form');
+
+            cardMethod.addEventListener('click', () => {
+                cardMethod.classList.add('active');
+                upiMethod.classList.remove('active');
+                cardForm.style.display = 'block';
+                upiForm.style.display = 'none';
+            });
+
+            upiMethod.addEventListener('click', () => {
+                upiMethod.classList.add('active');
+                cardMethod.classList.remove('active');
+                upiForm.style.display = 'block';
+                cardForm.style.display = 'none';
+            });
+
+            fetch('/get_cart')
+                .then(response => response.json())
+                .then(items => {
+                    const paymentItems = document.getElementById('payment-items');
+                    const paymentTotal = document.getElementById('payment-total');
+                    let total = 0;
+                    items.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = `${item.quantity} x ${item.name} (₹${item.quantity * item.price})`;
+                        paymentItems.appendChild(li);
+                        total += item.quantity * item.price;
+                    });
+                    paymentTotal.textContent = '₹' + total;
+                })
+                .catch(error => console.error('Error fetching cart data:', error));
+        });
+
+        function redirectToSuccess() {
+            window.location.href = "{{ url_for('payment_success') }}";
+        }
+    </script>
+</body>
+</html>

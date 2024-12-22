@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='payment_success.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2>Payment Successful</h2>
+        <p>Thank you for your payment! Your transaction has been successfully completed.</p>
+        <div class="transaction-details">
+            <span>Transaction ID:</span>
+            <span class="transaction-id">#123456789</span>
+        </div>
+        <div class="total-amount">
+            <span>Paid Amount:</span>
+            <span class="amount">₹{{ total }}</span>
+        </div>
+        <a href="/" class="home-button">Back to Home</a>
+    </div>
+</body>
+</html>

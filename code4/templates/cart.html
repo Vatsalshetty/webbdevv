@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+
+    <!-- Font Awesome and Google Fonts Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" />
+
+    <!-- Link to External CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='cart.css') }}">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <a  href="{{ url_for('menuu') }}" class="back-button"><i class="fa-solid fa-arrow-left"></i> Back to Menu</a>
+            <h1>Your Cart</h1>
+        </nav>
+    </header>
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+        <h2 class="cart-heading" style="text-align: center; margin-bottom: 20px; color: rgb(239, 79, 95);">
+            Review Your Order
+        </h2>
+        
+        <!-- Cart Table -->
+        <div class="cart-container">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-items">
+                    <!-- Items will be dynamically added here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Total Price -->
+        <div class="cart-total">
+            <h3>Total: ₹<span id="cart-total">0</span></h3>
+        </div>
+
+        <!-- Checkout Button -->
+        <div class="checkout-container">
+            <a href="{{ url_for('payment') }}" class="checkout-button">Proceed to Checkout</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Canteen Menu. All rights reserved.</p>
+    </footer>
+
+    <!-- External JS -->
+    <script src="script/cart.js"></script>
+    <!-- Include Razorpay Checkout script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            function updateCart() {
+                fetch('/get_cart')
+                    .then(response => response.json())
+                    .then(items => {
+                        console.log('Cart items:', items); // Debug line
+                        const cartItems = document.getElementById('cart-items');
+                        const cartTotal = document.getElementById('cart-total');
+                        cartItems.innerHTML = ''; // Clear existing items
+                        let total = 0;
+                        
+                        if (items && items.length > 0) {
+                            items.forEach((item, index) => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>${item.name}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>₹${item.price * item.quantity}</td>
+                                    <td><button class="remove-item" data-index="${index}">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button></td>
+                                `;
+                                cartItems.appendChild(row);
+                                total += item.price * item.quantity;
+                            });
+                        } else {
+                            cartItems.innerHTML = '<tr><td colspan="4">Your cart is empty</td></tr>';
+                        }
+                        
+                        cartTotal.textContent = total;
+                        
+                        // Store total in session when proceeding to checkout
+                        const checkoutBtn = document.querySelector('.checkout-button');
+                        checkoutBtn.onclick = (e) => {
+                            e.preventDefault();
+                            fetch('/update_total', {
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({total: total})
+                            })
+                            .then(() => window.location.href = "{{ url_for('payment') }}");
+                        };
+                    })
+                    .catch(err => {
+                        console.error('Error fetching cart:', err);
+                        alert('Error loading cart items');
+                    });
+            }
+
+            // Initial cart load
+            updateCart();
+
+            // Add event delegation for remove buttons
+            document.getElementById('cart-items').addEventListener('click', (e) => {
+                if (e.target.closest('.remove-item')) {
+                    const index = e.target.closest('.remove-item').dataset.index;
+                    fetch('/remove_from_cart', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({index: parseInt(index)})
+                    })
+                    .then(() => updateCart());
+                }
+            });
+        });
+
+        document.getElementById('rzp-button1').onclick = function(e){
+            e.preventDefault();
+            var totalAmount = "{{ total }}";
+            fetch('/create_order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    'total_amount': totalAmount
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                var options = {
+                    "key": "YOUR_RAZORPAY_KEY_ID",
+                    "amount": data.amount,
+                    "currency": "INR",
+                    "name": "BMS Canteens",
+                    "description": "Order Payment",
+                    "order_id": data.order_id,
+                    "handler": function (response){
+                        // Send payment details to server
+                        var form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = '/payment_success';
+                        form.innerHTML = `
+                            <input type="hidden" name="razorpay_payment_id" value="${response.razorpay_payment_id}">
+                            <input type="hidden" name="razorpay_order_id" value="${response.razorpay_order_id}">
+                            <input type="hidden" name="razorpay_signature" value="${response.razorpay_signature}">
+                        `;
+                        document.body.appendChild(form);
+                        form.submit();
+                    },
+                    "prefill": {
+                        "name": "{{ user_name }}",
+                        "email": "{{ user_email }}",
+                        "contact": "{{ user_phone }}"
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    }
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            });
+        };
+    </script>
+</body>
+
+</html>

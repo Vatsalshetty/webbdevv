@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='sign.css') }}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body>
+<div id="form">
+  <div class="container">
+    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-md-8 col-md-offset-2">
+      <div id="userform">
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+          <li><a href="#signup" role="tab" data-toggle="tab">Sign up</a></li>
+          <li class="active"><a href="#login" role="tab" data-toggle="tab">Log in</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade in" id="signup">
+            <h2 class="text-uppercase text-center">Sign Up for Free</h2>
+            <!-- Signup form content -->
+          </div>
+          <div class="tab-pane fade active in" id="login">
+            <h2 class="text-uppercase text-center">Log in</h2>
+            <form id="login" method="POST" action="/login">
+              <div class="form-group">
+                <label>Your Email<span class="req">*</span></label>
+                <input type="email" class="form-control" id="email" name="email" required data-validation-required-message="Please enter your email address." autocomplete="off">
+                <p class="help-block text-danger"></p>
+              </div>
+              <div class="form-group">
+                <label>Password<span class="req">*</span></label>
+                <input type="password" class="form-control" id="password" name="password" required data-validation-required-message="Please enter your password" autocomplete="off">
+                <p class="help-block text-danger"></p>
+              </div>
+              <div class="mrgn-30-top">
+                <button type="submit" class="btn btn-larger btn-block">Log in</button>
+              </div>
+            </form>
+            <div id="login-success" class="alert alert-success" style="display: none;">
+              Logged in successfully!
+            </div>
+            <div id="login-error" class="alert alert-danger" style="display: none;">
+              <!-- Will be updated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+  document.getElementById('login').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var form = event.target;
+    var formData = new FormData(form);
+    
+    fetch('/login', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.message === 'Logged in successfully') {
+        document.getElementById('login-success').style.display = 'block';
+        document.getElementById('login-error').style.display = 'none';
+        form.reset();
+      } else {
+        document.getElementById('login-success').style.display = 'none';
+        document.getElementById('login-error').textContent = data.message;
+        document.getElementById('login-error').style.display = 'block';
+      }
+    })
+    .catch(error => {
+      document.getElementById('login-success').style.display = 'none';
+      document.getElementById('login-error').textContent = 'An error occurred. Please try again.';
+      document.getElementById('login-error').style.display = 'block';
+      console.error('Error:', error);
+    });
+  });
+</script>
+</body>
+</html>

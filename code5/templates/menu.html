@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen Menu</title>
+
+    <!-- Font Awesome and Google Fonts Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" />
+
+    <!-- Link to External CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='menu.css') }}">
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <button class="go-to-cart fixed-bottom-right">
+        <a href="{{ url_for('cart') }}" style="color: inherit; text-decoration: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-fill"
+                viewBox="0 0 16 16">
+                <path
+                    d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+            </svg>
+        </a>
+    </button>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="{{ url_for('index') }}" class="back-button"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+            <h1>Canteen Menu</h1>
+        </nav>
+    </header>
+
+    <!-- Hero Section for Menu Page -->
+    <section class="menu-hero-section">
+        <h1 class="menu-heading" style="color: rgb(239, 79, 95);">Explore our delicious menu</h1>
+    </section>
+
+    <!-- Toggle Switch -->
+    <div class="veg-toggle-container">
+        <label class="switch">
+            <input type="checkbox" id="veg-toggle">
+            <span class="slider round"></span>
+        </label>
+        <span class="toggle-label">Show Veg Only</span>
+    </div>
+
+    <!-- Menu Items Section -->
+    <section class="menu-container">
+        <!-- Rolls -->
+        <div class="menu-item" data-veg="true">
+            <!-- <img src="{{ url_for('static', filename='images/veg-roll.jpg') }}" alt="Veg Roll"> -->
+            <div class="menu-details">
+                <h3>Veg Roll</h3>
+                <span>₹50</span>
+            </div>
+            <button class="add-to-cart" data-name="Veg Roll" data-price="50">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <div class="menu-item" data-veg="true">
+            <!-- <img src="{{ url_for('static', filename='images/veg-mayo-roll.jpg') }}" alt="Veg Mayo Roll"> -->
+            <div class="menu-details">
+                <h3>Veg Mayo Roll</h3>
+                <span>₹40</span>
+            </div>
+            <button class="add-to-cart" data-name="Veg Mayo Roll" data-price="40">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <div class="menu-item" data-veg="true">
+            <!-- <img src="{{ url_for('static', filename='images/paneer-roll.jpg') }}" alt="Paneer Roll"> -->
+            <div class="menu-details">
+                <h3>Paneer Roll</h3>
+                <span>₹50</span>
+            </div>
+            <button class="add-to-cart" data-name="Paneer Roll" data-price="50">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <!-- Add more Rolls similarly -->
+
+        <!-- Burgers -->
+        <div class="menu-item" data-veg="true">
+            <!-- <img src="{{ url_for('static', filename='images/veg-burger.jpg') }}" alt="Veg Burger"> -->
+            <div class="menu-details">
+                <h3>Veg Burger</h3>
+                <span>₹50</span>
+            </div>
+            <button class="add-to-cart" data-name="Veg Burger" data-price="50">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <div class="menu-item" data-veg="false">
+            <!-- <img src="{{ url_for('static', filename='images/chicken-burger.jpg') }}" alt="Chicken Burger"> -->
+            <div class="menu-details">
+                <h3>Chicken Burger</h3>
+                <span>₹70</span>
+            </div>
+            <button class="add-to-cart" data-name="Chicken Burger" data-price="70">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <div class="menu-item" data-veg="true">
+            <!-- <img src="{{ url_for('static', filename='images/paneer-cheese-burger.jpg') }}" alt="Paneer Cheese Burger"> -->
+            <div class="menu-details">
+                <h3>Paneer Cheese Burger</h3>
+                <span>₹60</span>
+            </div>
+            <button class="add-to-cart" data-name="Paneer Cheese Burger" data-price="60">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <!-- Add more Burgers similarly -->
+
+
+        <div class="menu-item veg" data-veg="true">
+            <!-- <img src="assets/sna1.jpg" alt="Veg Cutlet"> -->
+            <div class="menu-details">
+                <h3>Veg Cutlet</h3>
+                <p>Golden crispy veggie goodness.</p>
+                <span>₹30</span>
+            </div>
+            <button class="add-to-cart" data-name="Veg Cutlet" data-price="30">
+                <i class="fa fa-cart-plus"></i>              
+            </button>
+        </div>
+        <div class="menu-item veg" data-veg="true">
+            <!-- <img src="assets/sna2.jpg" alt="Potato Kiwes Plate"> -->
+            <div class="menu-details">
+                <h3>Potato Kiwes Plate</h3>
+                <p>Hot and crispy potato bites.</p>
+                <span>₹50</span>
+            </div>
+            <button class="add-to-cart" data-name="Potato Kiwes Plate" data-price="50">
+                <i class="fa fa-cart-plus"></i>              
+            </button>
+        </div>
+        <div class="menu-item veg" data-veg="true">
+            <!-- <img src="assets/sna3.jpg" alt="Veg Nugget Plate"> -->
+            <div class="menu-details">
+                <h3>Veg Nugget Plate</h3>
+                <p>Crispy vegetarian nuggets.</p>
+                <span>₹50</span>
+            </div>
+            <button class="add-to-cart" data-name="Veg Nugget Plate" data-price="50">
+                <i class="fa fa-cart-plus"></i>              
+            </button>
+        </div>
+        <div class="menu-item veg" data-veg="true">
+            <!-- <img src="assets/sna4.jpg" alt="Peri Peri Fries"> -->
+            <div class="menu-details">
+                <h3>Peri Peri Fries</h3>
+                <p>Spicy fries with peri peri seasoning.</p>
+                <span>₹50</span>
+            </div>
+            <button class="add-to-cart" data-name="Peri Peri Fries" data-price="50">
+                <i class="fa fa-cart-plus"></i>              
+            </button>
+        </div>
+        <div class="menu-item veg" data-veg="true">
+            <!-- <img src="assets/sna5.jpg" alt="Dynamite Fries"> -->
+            <div class="menu-details">
+                <h3>Dynamite Fries</h3>
+                <p>Loaded fries with a spicy kick.</p>
+                <span>₹70</span>
+            </div>
+            <button class="add-to-cart" data-name="Dynamite Fries" data-price="70">
+                <i class="fa fa-cart-plus"></i>              
+            </button>
+        </div>
+        <div class="menu-item veg" data-veg="true">
+            <!-- <img src="assets/sna6.jpg" alt="French Fries"> -->
+            <div class="menu-details">
+                <h3>French Fries</h3>
+                <p>Classic crispy fries.</p>
+                <span>₹50</span>
+            </div>
+            <button class="add-to-cart" data-name="French Fries" data-price="50">
+                <i class="fa fa-cart-plus"></i>              
+            </button>
+        </div>
+        
+        
+        <!-- Maggi -->
+        <div class="menu-item veg" data-veg="true">
+            <!-- <img src="assets/mag1.jpg" alt="Veg Maggi"> -->
+            <div class="menu-details">
+                <h3>Veg Maggi</h3>
+                <p>Classic maggi with vegetables.</p>
+                <span>₹40</span>
+            </div>
+            <button class="add-to-cart" data-name="Veg Maggi" data-price="40">
+                <i class="fa fa-cart-plus"></i>              
+            </button>
+        </div>
+        <div class="menu-item veg" data-veg="true">
+            <!-- <img src="assets/mag2.jpg" alt="Plain Maggi"> -->
+            <div class="menu-details">
+                <h3>Plain Maggi</h3>
+                <p>Simple and delicious.</p>
+                <span>₹30</span>
+            </div>
+            <button class="add-to-cart" data-name="Plain Maggi" data-price="30">
+                <i class="fa fa-cart-plus"></i>              
+            </button>
+        </div>
+        <div class="menu-item veg" data-veg="true">
+            <!-- <img src="assets/mag3.jpg" alt="Cheese Maggi"> -->
+            <div class="menu-details">
+                <h3>Cheese Maggi</h3>
+                <p>Maggi topped with melty cheese.</p>
+                <span>₹50</span>
+            </div>
+            <button class="add-to-cart" data-name="Cheese Maggi" data-price="50">
+                <i class="fa fa-cart-plus"></i>              
+            </button>
+        </div>
+        <div class="menu-item veg" data-veg="true">
+            <!-- <img src="assets/mag4.jpg" alt="Mayo Maggi"> -->
+            <div class="menu-details">
+                <h3>Mayo Maggi</h3>
+                <p>Maggi mixed with creamy mayo.</p>
+                <span>₹40</span>
+            </div>
+            <button class="add-to-cart" data-name="Mayo Maggi" data-price="40">
+                <i class="fa fa-cart-plus"></i>              
+            </button>
+        </div>
+    
+        <!-- Sandwiches -->
+        <div class="menu-item" data-veg="true">
+            <!-- <img src="{{ url_for('static', filename='images/veg-sandwich.jpg') }}" alt="Veg Sandwich"> -->
+            <div class="menu-details">
+                <h3>Veg Sandwich</h3>
+                <span>₹40</span>
+            </div>
+            <button class="add-to-cart" data-name="Veg Sandwich" data-price="40">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <div class="menu-item" >
+            <!-- <img src="{{ url_for('static', filename='images/veg-sandwich.jpg') }}" alt="Chicken Sandwich"> -->
+            <div class="menu-details">
+                <h3>Chicken Sandwich</h3>
+                <span>₹40</span>
+            </div>
+            <button class="add-to-cart" data-name="Chicken Sandwich" data-price="40">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <div class="menu-item" >
+            <!-- <img src="{{ url_for('static', filename='images/veg-sandwich.jpg') }}" alt="Chilli Chicken Sandwich"> -->
+            <div class="menu-details">
+                <h3>Chilli Chicken Sandwich</h3>
+                <span>₹40</span>
+            </div>
+            <button class="add-to-cart" data-name="Chilli Chikcen Sandwich" data-price="40">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <div class="menu-item">
+            <!-- <img src="{{ url_for('static', filename='images/egg-sandwich.jpg') }}" alt="Egg Sandwich"> -->
+            <div class="menu-details">
+                <h3>Egg Sandwich</h3>
+                <span>₹50</span>
+            </div>
+            <button class="add-to-cart" data-name="Egg Sandwich" data-price="50">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <!-- Add more Sandwiches similarly -->
+
+        <!-- Snacks -->
+        <div class="menu-item" data-veg="true">
+            <!-- <img src="{{ url_for('static', filename='images/veg-cutlet.jpg') }}" alt="Veg Cutlet"> -->
+            <div class="menu-details">
+                <h3>Veg Cutlet</h3>
+                <span>₹50</span>
+            </div>
+            <button class="add-to-cart" data-name="Veg Cutlet" data-price="50">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <div class="menu-item" data-veg="true">
+            <!-- <img src="{{ url_for('static', filename='images/peri-peri-fries.jpg') }}" alt="Peri Peri Fries"> -->
+            <div class="menu-details">
+                <h3>Peri Peri Fries</h3>
+                <span>₹50</span>
+            </div>
+            <button class="add-to-cart" data-name="Peri Peri Fries" data-price="50">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <div class="menu-item" data-veg="false">
+            <!-- <img src="{{ url_for('static', filename='images/egg-curry.jpg') }}" alt="Egg Curry"> -->
+            <div class="menu-details">
+                <h3>Egg Curry</h3>
+                <span>₹60</span>
+            </div>
+            <button class="add-to-cart" data-name="Egg Curry" data-price="60">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+
+        <!-- Add more Snacks similarly -->
+
+        <!-- Tea -->
+        <div class="menu-item" data-veg="true">
+            <!-- <img src="{{ url_for('static', filename='images/tea.jpg') }}" alt="Tea"> -->
+            <div class="menu-details">
+                <h3>Tea</h3>
+                <span>₹10</span>
+            </div>
+            <button class="add-to-cart" data-name="Tea" data-price="10">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <div class="menu-item" data-veg="true">
+            <!-- <img src="{{ url_for('static', filename='images/ginger-tea.jpg') }}" alt="Ginger Tea"> -->
+            <div class="menu-details">
+                <h3>Ginger Tea</h3>
+                <span>₹15</span>
+            </div>
+            <button class="add-to-cart" data-name="Ginger Tea" data-price="15">
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
+        <!-- Add more Tea items similarly -->
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Canteen Menu. All rights reserved.</p>
+    </footer>
+    <script src="{{ url_for('static', filename='menu.js') }}"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const cartButtons = document.querySelectorAll('.add-to-cart');
+        cartButtons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const name = btn.getAttribute('data-name');
+            const price = parseFloat(btn.getAttribute('data-price'));
+            fetch('/add_to_cart', {
+              method: 'POST',
+              headers: { 
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+              },
+              body: JSON.stringify({ name: name, price: price, quantity: 1 })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(`${name} added to cart!`);  // Add visual feedback
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Error adding item to cart');
+            });
+          });
+        });
+      });
+    </script>
+</body>
+
+</html>
